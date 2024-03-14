@@ -75,7 +75,7 @@ services() {
 
 	jar_util d "jramework" fw
 
-	#patch signature
+	#patch 
 
 	s0=$(find -name "Instrumentation.smali")
 	[[ -f $s0 ]] && $repS $dir/patch/Instrumentation/publicstaticwhitelistnewApplication.config.ini $s0
