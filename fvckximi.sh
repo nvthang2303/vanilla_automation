@@ -73,7 +73,7 @@ services() {
 
 	lang_dir="$dir/module/lang"
 
-	jar_util d "framework" fw
+	jar_util d "framework.jar" fw
 
 	#patch 
 

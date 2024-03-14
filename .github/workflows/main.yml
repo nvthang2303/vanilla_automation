@@ -26,7 +26,7 @@ jobs:
             echo "Setting Vienam timezone"
             sudo timedatectl set-timezone Asia/Ho_Chi_Minh
       
-       - name: Download Services.jar
+       - name: Download Framework.jar
          run: |
             axel -n $(nproc) ${{ github.event.inputs.ROM_URL }}
             
