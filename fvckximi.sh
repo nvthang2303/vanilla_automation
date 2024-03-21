@@ -69,7 +69,7 @@ jar_util()
 }
 
 
-services() {
+framework() {
 
 	lang_dir="$dir/module/lang"
 
@@ -78,8 +78,8 @@ services() {
 	#patch 
 
 	s0=$(find -name "Instrumentation.smali")
-	[[ -f $s0 ]] && $repS $dir/patch/Instrumentation/publicstaticwhitelistnewApplication.config.ini $s0
-	[[ -f $s0 ]] && $repS $dir/patch/Instrumentation/publicwhitelistnewApplication.config.ini $s0
+	[[ -f $s0 ]] && $repS $dir/patch/Instrumentation/staticwhitelistnewApplication.config.ini $s0
+	[[ -f $s0 ]] && $repS $dir/patch/Instrumentation/whitelistnewApplication.config.ini $s0
 
 	s1=$(find -name "AndroidKeyStoreSpi")
 	[[ -f $s1 ]] && $repS $dir/patch/AndroidKeyStoreSpi/publicwhitelisttest-apiengineGetCertificateChain.config.ini $s1
@@ -94,5 +94,5 @@ if [[ ! -d $dir/jar_temp ]]; then
 	
 fi
 
-services
+framework
 
