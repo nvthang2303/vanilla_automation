@@ -81,7 +81,7 @@ framework() {
 	[[ -f $s0 ]] && $repS $dir/patch/Instrumentation/public_static_whitelist_newApplication.config.ini $s0
 	[[ -f $s0 ]] && $repS $dir/patch/Instrumentation/static_whitelist_newApplication.config.ini $s0
 
-	s1=$(find -name "AndroidKeyStoreSpi")
+	s1=$(find -name "AndroidKeyStoreSpi.smali")
 	[[ -f $s1 ]] && $repS $dir/patch/AndroidKeyStoreSpi/public_whitelist_test-api_engineGetCertificateChain.config.ini $s1
 
 	
