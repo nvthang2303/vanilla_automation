@@ -17,7 +17,7 @@ jobs:
        
        - name: Setting up
          run: |
-            sudo apt-get install -y git wget zip unzip axel python3-pip zipalign apksigner xmlstarlet openjdk
+            sudo apt-get install -y git wget zip unzip axel python3-pip zipalign apksigner xmlstarlet
             pip3 install ConfigObj
 
        - name: Set up JDK
