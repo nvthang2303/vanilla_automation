@@ -73,7 +73,7 @@ framework() {
 
 	lang_dir="$dir/module/lang"
 
-	jar_util d "framework.jar" fw classes classes3 
+	jar_util d "framework.jar" fw classes classes2 classes3 
 
 	#patch 
 
@@ -94,7 +94,7 @@ framework() {
 	fi
 
 	
-	jar_util a "framework.jar" fw classes classes3 
+	jar_util a "framework.jar" fw classes classes2 classes3 
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
