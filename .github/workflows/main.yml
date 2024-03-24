@@ -39,7 +39,7 @@ jobs:
        - name : PATCH-ING
          run: |
             sudo chmod 777 -R *
-            ./fvckximi.sh
+            ./plan2.sh
        - name: Upload a Build Artifact
          uses: actions/upload-artifact@v3.1.1
          with:
