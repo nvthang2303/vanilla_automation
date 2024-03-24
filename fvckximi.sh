@@ -77,8 +77,8 @@ framework() {
 
 	#patch 
 
-	s0=$(find -name "ApplicationPackageManager.smali")
-	[[ -f $s0 ]] && sed -i 's/# static fields/# static fields\n\n.field private static final blacklist featuresNexus:[Ljava\/lang\/String;\n\n.field private static final blacklist featuresPixel:[Ljava\/lang\/String;\n\n.field private static final blacklist featuresPixelOthers:[Ljava\/lang\/String;\n\n.field private static final blacklist featuresTensor:[Ljava\/lang\/String;\n\n.field private static final blacklist pTensorCodenames:[Ljava\/lang\/String;/g' "$s0"
+	s0=$(find -name 'ApplicationPackageManager.smali')
+	[[ -f $s0 ]] && sed -i '0,/# static fields/s//# static fields\n\n.field private static final blacklist featuresNexus:[Ljava\/lang\/String;\n.field private static final blacklist featuresPixel:[Ljava\/lang\/String;\n.field private static final blacklist featuresPixelOthers:[Ljava\/lang\/String;\n.field private static final blacklist featuresTensor:[Ljava\/lang\/String;\n.field private static final blacklist pTensorCodenames:[Ljava\/lang\/String;/' "$s0"
 
  
     	
