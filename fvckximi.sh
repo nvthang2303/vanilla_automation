@@ -73,7 +73,7 @@ framework() {
 
 	lang_dir="$dir/module/lang"
 
-	jar_util d "framework.jar" fw
+	jar xf "framework.jar" 
 
 	#patch 
 
@@ -81,11 +81,11 @@ framework() {
 if [[ -f $s0 ]]; then
     # Add fields to ApplicationPackageManager.smali
     sed -i '/# static fields/a \
-    .field private static final blacklist featuresNexus:[Ljava/lang/String; \
-    .field private static final blacklist featuresPixel:[Ljava/lang/String; \
-    .field private static final blacklist featuresPixelOthers:[Ljava/lang/String; \
-    .field private static final blacklist featuresTensor:[Ljava/lang/String; \
-    .field private static final blacklist pTensorCodenames:[Ljava/lang/String;' ApplicationPackageManager.smali
+    	.field private static final blacklist featuresNexus:[Ljava/lang/String; \
+    	.field private static final blacklist featuresPixel:[Ljava/lang/String; \
+    	.field private static final blacklist featuresPixelOthers:[Ljava/lang/String; \
+    	.field private static final blacklist featuresTensor:[Ljava/lang/String; \
+    	.field private static final blacklist pTensorCodenames:[Ljava/lang/String;' ApplicationPackageManager.smali
     echo "Fields added successfully."
 else
     echo "Error: ApplicationPackageManager.smali not found."
@@ -93,7 +93,7 @@ else
 fi
 
 	
-	jar_util a "framework.jar" fw
+	jar cf framework.jar framework
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
