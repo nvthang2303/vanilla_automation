@@ -78,7 +78,7 @@ framework() {
 	#patch 
 
 	s0=$(find -name "ApplicationPackageManager.smali")
-	[[ -f $s0 ]] && sed -i '/#static fields/a \
+	[[ -f $s0 ]] && sed -i '/ # static fields/a \
 .field private static final blacklist featuresNexus:[Ljava/lang/String; \
 .field private static final blacklist featuresPixel:[Ljava/lang/String; \
 .field private static final blacklist featuresPixelOthers:[Ljava/lang/String; \
