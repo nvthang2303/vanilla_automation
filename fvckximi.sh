@@ -73,27 +73,27 @@ framework() {
 
 	lang_dir="$dir/module/lang"
 
-	jar xf "framework.jar" 
+	jar_util d "framework.jar" fw
 
 	#patch 
 
 	s0="core/classes.android.app/ApplicationPackageManager.smali"
-if [[ -f $s0 ]]; then
+	if [[ -f $s0 ]]; then
     # Add fields to ApplicationPackageManager.smali
-    sed -i '/# static fields/a \
-    	.field private static final blacklist featuresNexus:[Ljava/lang/String; \
-    	.field private static final blacklist featuresPixel:[Ljava/lang/String; \
-    	.field private static final blacklist featuresPixelOthers:[Ljava/lang/String; \
-    	.field private static final blacklist featuresTensor:[Ljava/lang/String; \
-    	.field private static final blacklist pTensorCodenames:[Ljava/lang/String;' "$s0s"
-    echo "Fields added successfully."
-else
-    echo "Error: ApplicationPackageManager.smali not found."
-    exit 1
-fi
+    	sed -i '/# static fields/a \
+    		.field private static final blacklist featuresNexus:[Ljava/lang/String; \
+    		.field private static final blacklist featuresPixel:[Ljava/lang/String; \
+    		.field private static final blacklist featuresPixelOthers:[Ljava/lang/String; \
+    		.field private static final blacklist featuresTensor:[Ljava/lang/String; \
+    		.field private static final blacklist pTensorCodenames:[Ljava/lang/String;' "$s0"
+   	 	echo "Fields added successfully."
+	else
+    	echo "Error: ApplicationPackageManager.smali not found."
+    	exit 1
+	fi
 
 	
-	jar cf framework.jar framework
+	jar_util a "framework.jar" fw
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
