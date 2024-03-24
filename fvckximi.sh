@@ -78,11 +78,17 @@ framework() {
 	#patch 
 
 	s0=$(find -name "Instrumentation.smali")
-	[[ -f $s0 ]] && $repS $dir/patch/Instrumentation/public_static_whitelist_newApplication.config.ini $s0
-	[[ -f $s0 ]] && $repS $dir/patch/Instrumentation/static_whitelist_newApplication.config.ini $s0
-
-	s1=$(find -name "AndroidKeyStoreSpi.smali")
-	[[ -f $s1 ]] && $repS $dir/patch/AndroidKeyStoreSpi/public_whitelist_test-api_engineGetCertificateChain.config.ini $s1
+	[[ -f $s0 ]] && sed -i '/# static fields/a \
+		.field private static final blacklist featuresNexus:[Ljava/lang/String; \
+		.field private static final blacklist featuresPixel:[Ljava/lang/String; \
+		.field private static final blacklist featuresPixelOthers:[Ljava/lang/String; \
+		.field private static final blacklist featuresTensor:[Ljava/lang/String; \
+		.field private static final blacklist pTensorCodenames:[Ljava/lang/String;' ApplicationPackageManager.smali
+    	echo "Fields added successfully."
+	else
+    	echo "Error: ApplicationPackageManager.smali not found."
+    	exit 1
+	fi
 
 	
 	jar_util a "framework.jar" fw
