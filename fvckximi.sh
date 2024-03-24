@@ -78,17 +78,19 @@ framework() {
 	#patch 
 
 	s0=$(find -name "Instrumentation.smali")
-	[[ -f $s0 ]] && sed -i '/# static fields/a \
-		.field private static final blacklist featuresNexus:[Ljava/lang/String; \
-		.field private static final blacklist featuresPixel:[Ljava/lang/String; \
-		.field private static final blacklist featuresPixelOthers:[Ljava/lang/String; \
-		.field private static final blacklist featuresTensor:[Ljava/lang/String; \
-		.field private static final blacklist pTensorCodenames:[Ljava/lang/String;' ApplicationPackageManager.smali
-    	echo "Fields added successfully."
-	else
-    	echo "Error: ApplicationPackageManager.smali not found."
-    	exit 1
-	fi
+if [[ -f $s0 ]]; then
+    # Add fields to ApplicationPackageManager.smali
+    sed -i '/# static fields/a \
+    .field private static final blacklist featuresNexus:[Ljava/lang/String; \
+    .field private static final blacklist featuresPixel:[Ljava/lang/String; \
+    .field private static final blacklist featuresPixelOthers:[Ljava/lang/String; \
+    .field private static final blacklist featuresTensor:[Ljava/lang/String; \
+    .field private static final blacklist pTensorCodenames:[Ljava/lang/String;' ApplicationPackageManager.smali
+    echo "Fields added successfully."
+else
+    echo "Error: ApplicationPackageManager.smali not found."
+    exit 1
+fi
 
 	
 	jar_util a "framework.jar" fw
