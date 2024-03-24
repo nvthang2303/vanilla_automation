@@ -16,7 +16,7 @@ jar_util()
 
 	if [[ $1 == "d" ]]; then
 		echo -ne "====> Patching $2 : "
-		if [[ -f $dir/miui-services.jar ]]; then
+		if [[ -f $dir/framework.jar ]]; then
 			sudo cp $dir/framework.jar $dir/jar_temp
 			sudo chown $(whoami) $dir/jar_temp/$2
 			unzip $dir/jar_temp/$2 -d $dir/jar_temp/$2.out  >/dev/null 2>&1
