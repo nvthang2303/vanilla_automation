@@ -77,7 +77,7 @@ framework() {
 
 	#patch 
 
-	s0=$(find -name "ApplicationPackageManager.smali")
+	s0="core/classes.android.app/ApplicationPackageManager.smali"
 if [[ -f $s0 ]]; then
     # Add fields to ApplicationPackageManager.smali
     sed -i '/# static fields/a \
@@ -85,7 +85,7 @@ if [[ -f $s0 ]]; then
     	.field private static final blacklist featuresPixel:[Ljava/lang/String; \
     	.field private static final blacklist featuresPixelOthers:[Ljava/lang/String; \
     	.field private static final blacklist featuresTensor:[Ljava/lang/String; \
-    	.field private static final blacklist pTensorCodenames:[Ljava/lang/String;' ApplicationPackageManager.smali
+    	.field private static final blacklist pTensorCodenames:[Ljava/lang/String;' "$s0s"
     echo "Fields added successfully."
 else
     echo "Error: ApplicationPackageManager.smali not found."
