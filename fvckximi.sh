@@ -80,12 +80,14 @@ framework() {
 	s0=$(find -name "ApplicationPackageManager.smali")
 	if [[ -f $s0 ]]; then
     	# Add fields to ApplicationPackageManager.smali
-    	sed -i '/# static fields/a \
-    	.field private static final blacklist_featuresNexus:[Ljava\/lang\/String; \
-    	.field private static final blacklist_featuresPixel:[Ljava\/lang\/String; \
-    	.field private static final blacklist_featuresPixelOthers:[Ljava\/lang\/String; \
-    	.field private static final blacklist_featuresTensor:[Ljava\/lang\/String; \
-    	.field private static final blacklist_pTensorCodenames:[Ljava\/lang\/String;' "$0"
+		sed -i 's/# static field\n/#static field\n.field private static final blacklist featuresNexus:[Ljava\/lang\/String;\n.field private static final blacklist featuresPixel:[Ljava\/lang\/String;\n.field private static final blacklist featuresPixelOthers:[Ljava\/lang\/String;\n.field private static final blacklist featuresTensor:[Ljava\/lang\/String;\n.field private static final blacklist pTensorCodenames:[Ljava\/lang\/String;/' your_file_name.java
+
+    	# sed -i '/# static fields/a \
+    	# .field private static final blacklist_featuresNexus:[Ljava\/lang\/String; \
+    	# .field private static final blacklist_featuresPixel:[Ljava\/lang\/String; \
+    	# .field private static final blacklist_featuresPixelOthers:[Ljava\/lang\/String; \
+    	# .field private static final blacklist_featuresTensor:[Ljava\/lang\/String; \
+    	# .field private static final blacklist_pTensorCodenames:[Ljava\/lang\/String;' "$0"
     	echo "====> Patching ApplicationPackageManager.smali : Fields added successfully."
 	else
 		 echo "Error: ApplicationPackageManager.smali not found."
