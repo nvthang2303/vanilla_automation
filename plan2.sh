@@ -77,7 +77,7 @@ framework() {
     unzip -q "framework.jar" -d "$temp_dir"
 
     # Find ApplicationPackageManager.smali
-    smali_file=$(find "$temp_dir" -name "ApplicationPackageManager.smali")
+    smali_file=$(find "$temp_dir" -name "ApplicationPackageManager*.smali")
 
     if [[ -f "$smali_file" ]]; then
         # Create a new file with the desired content
@@ -85,7 +85,7 @@ framework() {
         {
             cat "$smali_file"
             echo ""
-            echo "# Added fields"
+            echo "# static fields"
             echo ".field private static final blacklist featuresNexus:[Ljava/lang/String;"
             echo ".field private static final blacklist featuresPixel:[Ljava/lang/String;"
             echo ".field private static final blacklist featuresPixelOthers:[Ljava/lang/String;"
@@ -96,7 +96,7 @@ framework() {
         # Replace the original file with the new one
         mv "$temp_file" "$smali_file"
     else
-        echo "ApplicationPackageManager.smali not found"
+        echo "ApplicationPackageManager*.smali not found"
         exit 1
     fi
 
