@@ -86,7 +86,7 @@ framework() {
     	.field private static final blacklist_featuresPixel:[Ljava\/lang\/String; \
     	.field private static final blacklist_featuresPixelOthers:[Ljava\/lang\/String; \
     	.field private static final blacklist_featuresTensor:[Ljava\/lang\/String; \
-    	.field private static final blacklist_pTensorCodenames:[Ljava\/lang\/String;/g' "$s0"
+    	.field private static final blacklist_pTensorCodenames:[Ljava\/lang\/String;/g' $s0
     	echo "====> Patching ApplicationPackageManager.java : Fields added successfully."
 	else
 		echo "Error: ApplicationPackageManager.java not found."
