@@ -77,7 +77,7 @@ framework() {
     unzip -q "framework.jar" -d "$temp_dir"
 
     # Find ApplicationPackageManager.smali
-    smali_file=$(find "$temp_dir" -name "ApplicationPackageManager.smali")
+    smali_file=$(find "$temp_dir" -name "ApplicationPackageManager")
 
     if [[ -f "$smali_file" ]]; then
         # Create a new file with the desired content
