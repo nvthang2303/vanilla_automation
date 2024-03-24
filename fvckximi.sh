@@ -2,6 +2,14 @@
 dir=$(pwd)
 repS="python3 $dir/bin/strRep.py"
 
+get_file_dir() {
+	if [[ $1 ]]; then
+		sudo find $dir/ -name $1 
+	else 
+		return 0
+	fi
+}
+
 jar_util() 
 {
 
