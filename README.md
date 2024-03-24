@@ -1,2 +1,3 @@
-# android13_remove_apk_protection
+# lmao
+
 this patch make pass cts, google photo
