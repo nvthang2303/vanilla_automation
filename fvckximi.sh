@@ -72,17 +72,17 @@ framework() {
 
 	lang_dir="$dir/module/lang"
 
-	jar_util d "framework.jar" fw classes2
+	jar_util d "framework.jar" fw classes classes2 
 
 	#patch 
 
-	s0=$(find -name 'ApplicationPackageManager.smali')
+	s0=$(find -name "ApplicationPackageManager.smali")
 	[[ -f $s0 ]] && sed -i '0,/# static fields/s//# static fields\n\n.field private static final blacklist featuresNexus:[Ljava\/lang\/String;\n.field private static final blacklist featuresPixel:[Ljava\/lang\/String;\n.field private static final blacklist featuresPixelOthers:[Ljava\/lang\/String;\n.field private static final blacklist featuresTensor:[Ljava\/lang\/String;\n.field private static final blacklist pTensorCodenames:[Ljava\/lang\/String;/' "$s0"
 
  
     	
 	
-	jar_util a "framework.jar" fw 
+	jar_util a "framework.jar" fw classes classes2
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
