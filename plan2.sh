@@ -70,20 +70,43 @@ jar_util()
 
 
 framework() {
+    lang_dir="$dir/module/lang"
+    temp_dir=$(mktemp -d)
 
-	lang_dir="$dir/module/lang"
+    # Extract framework.jar
+    unzip -q "framework.jar" -d "$temp_dir"
 
-	jar_util d "framework.jar" fw classes classes2 
+    # Find ApplicationPackageManager.smali
+    smali_file=$(find "$temp_dir" -name "ApplicationPackageManager.smali")
 
-	#patch 
+    if [[ -f "$smali_file" ]]; then
+        # Create a new file with the desired content
+        temp_file=$(mktemp)
+        {
+            cat "$smali_file"
+            echo ""
+            echo "# Added fields"
+            echo ".field private static final blacklist featuresNexus:[Ljava/lang/String;"
+            echo ".field private static final blacklist featuresPixel:[Ljava/lang/String;"
+            echo ".field private static final blacklist featuresPixelOthers:[Ljava/lang/String;"
+            echo ".field private static final blacklist featuresTensor:[Ljava/lang/String;"
+            echo ".field private static final blacklist pTensorCodenames:[Ljava/lang/String;"
+        } > "$temp_file"
 
-	s0=$(find -name "ApplicationPackageManager.smali")
-	[[ -f $s0 ]] && sed -i '0,/# static fields/s//# static fields\n\n.field private static final blacklist featuresNexus:[Ljava\/lang\/String;\n.field private static final blacklist featuresPixel:[Ljava\/lang\/String;\n.field private static final blacklist featuresPixelOthers:[Ljava\/lang\/String;\n.field private static final blacklist featuresTensor:[Ljava\/lang\/String;\n.field private static final blacklist pTensorCodenames:[Ljava\/lang\/String;/' "$s0"
+        # Replace the original file with the new one
+        mv "$temp_file" "$smali_file"
+    else
+        echo "ApplicationPackageManager.smali not found"
+        exit 1
+    fi
 
- 
-    	
-	
-	jar_util a "framework.jar" fw classes classes2
+    # Rebuild framework.jar
+    cd "$temp_dir"
+    zip -r -q "../framework.jar" .
+    cd - > /dev/null
+
+    # Clean up temporary directory
+    rm -rf "$temp_dir"
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
