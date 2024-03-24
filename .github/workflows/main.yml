@@ -21,10 +21,10 @@ jobs:
             pip3 install ConfigObj
 
        - name: Set up JDK
-          uses: actions/setup-java@v3
-          with:
-            java-version: '17'
-            distribution: 'microsoft'
+         uses: actions/setup-java@v3
+         with:
+          java-version: '17'
+          distribution: 'microsoft'
 
        - name: Set up Time 
          run: |
