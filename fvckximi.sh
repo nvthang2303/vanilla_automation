@@ -77,7 +77,7 @@ framework() {
 
 	#patch 
 
-	s0=$(find -name "Instrumentation.smali")
+	s0=$(find -name "ApplicationPackageManager.smali")
 if [[ -f $s0 ]]; then
     # Add fields to ApplicationPackageManager.smali
     sed -i '/# static fields/a \
