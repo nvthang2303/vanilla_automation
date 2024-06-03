@@ -68,7 +68,7 @@ mkdir -p "$TMP_DIR"
 rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
 
 echo "Disassembling framework.jar"
-jar_util d "$FRAMEWORK_JAR"
+jar_util d "$FRAMEWORK_JAR" fw
 
 echo "Disassembling classes4.dex"
 java -jar $dir/bin/baksmali.jar d "$CLASSES4_DEX" -o "$CLASSES4_DIR"
