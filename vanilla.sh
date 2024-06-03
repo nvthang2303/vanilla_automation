@@ -65,6 +65,23 @@ FRAMEWORK_DIR="$TMP_DIR/framework.out"
 
 mkdir -p "$TMP_DIR"
 
+# Create the framework.out directory if it doesn't exist
+if [ ! -d "$FRAMEWORK_DIR" ]; then
+    mkdir -p "$FRAMEWORK_DIR"
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to create directory $FRAMEWORK_DIR"
+        exit 1
+    fi
+fi
+
+# Create the classes4.out directory if it doesn't exist
+if [ ! -d "$CLASSES4_DIR" ]; then
+    mkdir -p "$CLASSES4_DIR"
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to create directory $CLASSES4_DIR"
+        exit 1
+    fi
+fi
 
 echo "Disassembling framework.jar"
 jar_util d "framework.jar" fw
