@@ -105,10 +105,10 @@ framework() {
     rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
 
     echo "Disassembling framework.jar"
-    jar_util d "$FRAMEWORK_JAR"
+    jar_util d "$FRAMEWORK_JAR" fw classes classes*
 
     echo "Disassembling classes4.dex"
-    jar_util d "$CLASSES4_DEX" -o "$CLASSES4_DIR"
+    jar_util d  "$CLASSES4_DEX" fw -o "$CLASSES4_DIR"
     if [[ ! -d "$CLASSES4_DIR" ]]; then
         echo "Error: Failed to disassemble classes4.dex"
         exit 1
@@ -125,7 +125,7 @@ framework() {
         cp "$smali_file" "$dest_file"
     done
 
-    jar_util a "$FRAMEWORK_JAR"
+    jar_util a "$FRAMEWORK_JAR" fw
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
