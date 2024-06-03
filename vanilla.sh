@@ -61,8 +61,8 @@ framework() {
     CLASSES4_DEX="$dir/cts14/classes4.dex"
     FRAMEWORK_JAR="framework.jar"
     TMP_DIR="$dir/jar_temp"
-    CLASSES4_DIR="$TMP_DIR/classes4"
-    FRAMEWORK_DIR="$TMP_DIR/framework"
+    CLASSES4_DIR="$TMP_DIR/classes4.out"
+    FRAMEWORK_DIR="$TMP_DIR/framework.out"
 
     mkdir -p "$TMP_DIR"
 
@@ -72,20 +72,22 @@ framework() {
     jar_util d "$FRAMEWORK_JAR" fw
 
     echo "Disassembling classes4.dex"
-    jar_util d "$CLASSES4_DEX" classes4
+    jar_util d "$CLASSES4_DEX" -o "$CLASSES4_DIR"
+    if [[ ! -d "$CLASSES4_DIR" ]]; then
+        echo "Error: Failed to disassemble classes4.dex"
+        exit 1
+    fi
 
-    for src_dir in $(find "$CLASSES4_DIR" -type d); do
-        dest_dir="$FRAMEWORK_DIR/${src_dir#$CLASSES4_DIR}"
-        mkdir -p "$dest_dir"
-    done
-
+    echo "Copying disassembled .smali files from classes4.dex to framework.jar"
     for smali_file in $(find "$CLASSES4_DIR" -name "*.smali"); do
         dest_file="$FRAMEWORK_DIR/${smali_file#$CLASSES4_DIR}"
         echo "Copying $smali_file to $dest_file"
+        mkdir -p "$(dirname "$dest_file")"
         cp "$smali_file" "$dest_file"
     done
 
-    jar_util a "$FRAMEWORK_JAR" fw
+    echo "Assembling framework.jar"
+    jar_util a "$FRAMEWORK_JAR"
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
