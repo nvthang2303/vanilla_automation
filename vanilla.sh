@@ -65,7 +65,6 @@ FRAMEWORK_DIR="$TMP_DIR/framework.out"
 
 mkdir -p "$TMP_DIR"
 
-rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
 
 echo "Disassembling framework.jar"
 jar_util d "framework.jar" fw
