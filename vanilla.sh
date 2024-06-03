@@ -105,14 +105,10 @@ framework() {
     rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
 
     echo "Disassembling framework.jar"
-    jar_util d "$FRAMEWORK_JAR" fw classes classes*
+    jar_util d "$FRAMEWORK_JAR" fw
 
     echo "Disassembling classes4.dex"
-    jar_util d  "$CLASSES4_DEX" fw -o "$CLASSES4_DIR"
-    if [[ ! -d "$CLASSES4_DIR" ]]; then
-        echo "Error: Failed to disassemble classes4.dex"
-        exit 1
-    fi
+    jar_util d "$CLASSES4_DEX" fw
 
     for src_dir in $(find "$CLASSES4_DIR" -type d); do
         dest_dir="$FRAMEWORK_DIR/${src_dir#$CLASSES4_DIR}"
