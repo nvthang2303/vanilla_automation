@@ -56,45 +56,45 @@ jar_util() {
     fi
 }
 
-framework() {
-    CLASSES4_DEX="$dir/cts14/classes4.dex"
-    FRAMEWORK_JAR="$dir/framework.jar"
-    TMP_DIR="$dir/jar_temp"
-    CLASSES4_DIR="$TMP_DIR/classes4.out"
-    FRAMEWORK_DIR="$TMP_DIR/framework.out"
 
-    mkdir -p "$TMP_DIR"
+CLASSES4_DEX="$dir/cts14/classes4.dex"
+FRAMEWORK_JAR="$dir/framework.jar"
+TMP_DIR="$dir/jar_temp"
+CLASSES4_DIR="$TMP_DIR/classes4.out"
+FRAMEWORK_DIR="$TMP_DIR/framework.out"
 
-    rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
+mkdir -p "$TMP_DIR"
 
-    echo "Disassembling framework.jar"
-    jar_util d "$FRAMEWORK_JAR"
+rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
 
-    echo "Disassembling classes4.dex"
-    jar_util d "$CLASSES4_DEX" fw classes4
+echo "Disassembling framework.jar"
+jar_util d "$FRAMEWORK_JAR"
 
-    if [[ ! -d "$CLASSES4_DIR" ]]; then
-        echo "Error: Failed to disassemble classes4.dex"
-        exit 1
-    fi
+echo "Disassembling classes4.dex"
+java -jar $dir/bin/baksmali.jar d "$CLASSES4_DEX" -o "$CLASSES4_DIR"
 
-    echo "Copying disassembled .smali files from classes4.dex to framework.jar"
-    for smali_file in $(find "$CLASSES4_DIR" -name "*.smali"); do
-        dest_file="$FRAMEWORK_DIR/${smali_file#$CLASSES4_DIR}"
-        echo "Copying $smali_file to $dest_file"
-        mkdir -p "$(dirname "$dest_file")"
-        cp "$smali_file" "$dest_file"
-    done
+if [[ ! -d "$CLASSES4_DIR" ]]; then
+    echo "Error: Failed to disassemble classes4.dex"
+    exit 1
+fi
 
-    echo "Assembling framework.jar"
-    jar_util a "framework.jar"
-}
+echo "Copying disassembled .smali files from classes4.dex to framework.jar"
+for smali_file in $(find "$CLASSES4_DIR" -name "*.smali"); do
+    dest_file="$FRAMEWORK_DIR/${smali_file#$CLASSES4_DIR}"
+    echo "Copying $smali_file to $dest_file"
+    mkdir -p "$(dirname "$dest_file")"
+    cp "$smali_file" "$dest_file"
+done
+
+echo "Assembling framework.jar"
+jar_util a "framework.jar"
+
 
 if [[ ! -d $dir/jar_temp ]]; then
     mkdir $dir/jar_temp
 fi
 
-framework
+
 
 if [[ -f $dir/jar_temp/framework.jar ]]; then
     sudo cp -rf $dir/jar_temp/framework.jar $dir/module/system/framework/framework.jar
