@@ -94,67 +94,44 @@ repM () {
 }
 
 framework() {
-	CLASSES4_DEX="$dir/cts14/classes4.dex"
-	FRAMEWORK_JAR="framework.jar"  # Adjusted for the jar_util function
-	TMP_DIR="$dir/jar_temp"
-	CLASSES4_DIR="$TMP_DIR/classes4"
-	FRAMEWORK_DIR="$TMP_DIR/framework"
+    CLASSES4_DEX="$dir/cts14/classes4.dex"
+    FRAMEWORK_JAR="framework.jar"
+    TMP_DIR="$dir/jar_temp"
+    CLASSES4_DIR="$TMP_DIR/classes4"
+    FRAMEWORK_DIR="$TMP_DIR/framework"
 
-	# Create a temporary directory
-	mkdir -p "$TMP_DIR"
+    mkdir -p "$TMP_DIR"
 
-	# Ensure previous extractions are cleaned up
-	rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
+    rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
 
-	# Disassemble framework.jar using jar_util
-	echo "Disassembling framework.jar"
-	jar_util d "$FRAMEWORK_JAR" fw classes*
+    echo "Disassembling framework.jar"
+    jar_util d "$FRAMEWORK_JAR" fw
 
-	# Disassemble classes4.dex
-	echo "Disassembling classes4.dex"
-	jar_util d -o "$CLASSES4_DIR" fw "$CLASSES4_DEX"
+    echo "Disassembling classes4.dex"
+    jar_util d "$CLASSES4_DEX" classes4
 
-	declare -a SMALI_FILES=(
-		"android/app/ApplicationPackageManager.smali"
-    	"android/app/Instrumentation.smali"
-    	"android/security/keystore2/AndroidKeyStoreSpi.smali"
-    	"com/android/internal/util/summert/AttestationHooks.smali"
-    	"com/android/internal/util/summert/GamesPropsUtils.smali"
-    	"com/android/internal/util/summert/PixelPropsUtils.smali"
-    	"com/android/internal/util/summert/PixelPropsUtils\$1.smali"
-    	"com/android/internal/util/summert/PixelPropsUtils\$\$ExternalSyntheticLambda0.smali"
-    	"com/android/internal/util/summert/PixelPropsUtils\$\$ExternalSyntheticLambda1.smali"
-    	"com/android/internal/util/summert/AttestationHooks\$\$ExternalSyntheticLambda0.smali"
-	)
-	
-	for smali_file in "${SMALI_FILES[@]}"; do
-    	rm -f "$FRAMEWORK_DIR/smali/$smali_file"
-	done
+    for src_dir in $(find "$CLASSES4_DIR" -type d); do
+        dest_dir="$FRAMEWORK_DIR/${src_dir#$CLASSES4_DIR}"
+        mkdir -p "$dest_dir"
+    done
 
-	# Copy the specified files from classes4.dex to the framework directory
-	for smali_file in "${SMALI_FILES[@]}"; do
-    	src_file="$CLASSES4_DIR/$smali_file"
-    	dest_file="$FRAMEWORK_DIR/smali/$smali_file"
-    	mkdir -p "$(dirname "$dest_file")"
-    	if [[ -f "$src_file" ]]; then
-        	echo "Copying $src_file to $dest_file"
-        	cp -f "$src_file" "$dest_file"
-    	else
-        	echo "Warning: $src_file does not exist"
-    	fi
-	done
-	
-	jar_util a "$FRAMEWORK_JAR" fw classes*
+    for smali_file in $(find "$CLASSES4_DIR" -name "*.smali"); do
+        dest_file="$FRAMEWORK_DIR/${smali_file#$CLASSES4_DIR}"
+        echo "Copying $smali_file to $dest_file"
+        cp "$smali_file" "$dest_file"
+    done
+
+    jar_util a "$FRAMEWORK_JAR" fw
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
-	mkdir $dir/jar_temp
+    mkdir $dir/jar_temp
 fi
 
 framework
 
-if  [ -f $dir/jar_temp/framework.jar ]; then
-	sudo cp -rf $dir/jar_temp/*.jar $dir/module/system/framework
+if [[ -f $dir/jar_temp/framework.jar ]]; then
+    sudo cp -rf $dir/jar_temp/*.jar $dir/module/system/framework
 else
-	echo "Fail to copy framework"
+    echo "Fail to copy framework"
 fi
