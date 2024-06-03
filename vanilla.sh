@@ -1,3 +1,5 @@
+#!/bin/bash
+
 dir=$(pwd)
 repM="python3 $dir/bin/strRep.py"
 
@@ -65,7 +67,7 @@ jar_util()
 				if [[ -f $dir/jar_temp/$2 ]]; then
 					rm -rf $dir/jar_temp/$2.out $dir/jar_temp/$2_notal 
 					#sudo cp -rf $dir/jar_temp/$2 $(get_file_dir $2) 
-					echo "Succes"
+					echo "Success"
 				else
 					echo "Fail"
 				fi
@@ -91,7 +93,6 @@ repM () {
 	fi
 }
 
-
 framework() {
 	CLASSES4_DEX="$dir/cts14/classes4.dex"
 	FRAMEWORK_JAR="framework.jar"  # Adjusted for the jar_util function
@@ -106,9 +107,11 @@ framework() {
 	rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
 
 	# Disassemble framework.jar using jar_util
+	echo "Disassembling framework.jar"
 	jar_util d "$FRAMEWORK_JAR" fw classes*
 
 	# Disassemble classes4.dex
+	echo "Disassembling classes4.dex"
 	jar_util d -o "$CLASSES4_DIR" fw "$CLASSES4_DEX"
 
 	declare -a SMALI_FILES=(
@@ -123,32 +126,35 @@ framework() {
     	"com/android/internal/util/summert/PixelPropsUtils\$\$ExternalSyntheticLambda1.smali"
     	"com/android/internal/util/summert/AttestationHooks\$\$ExternalSyntheticLambda0.smali"
 	)
+	
 	for smali_file in "${SMALI_FILES[@]}"; do
     	rm -f "$FRAMEWORK_DIR/smali/$smali_file"
 	done
 
-# Copy the specified files from classes4.dex to the framework directory
+	# Copy the specified files from classes4.dex to the framework directory
 	for smali_file in "${SMALI_FILES[@]}"; do
     	src_file="$CLASSES4_DIR/$smali_file"
     	dest_file="$FRAMEWORK_DIR/smali/$smali_file"
     	mkdir -p "$(dirname "$dest_file")"
-    	cp -f "$src_file" "$dest_file"
+    	if [[ -f "$src_file" ]]; then
+        	echo "Copying $src_file to $dest_file"
+        	cp -f "$src_file" "$dest_file"
+    	else
+        	echo "Warning: $src_file does not exist"
+    	fi
 	done
 	
 	jar_util a "$FRAMEWORK_JAR" fw classes*
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
-
 	mkdir $dir/jar_temp
-	
 fi
 
 framework
 
-
 if  [ -f $dir/jar_temp/framework.jar ]; then
-		sudo cp -rf $dir/jar_temp/*.jar $dir/module/system/framework
-	else
-		echo "Fail to copy framework"
+	sudo cp -rf $dir/jar_temp/*.jar $dir/module/system/framework
+else
+	echo "Fail to copy framework"
 fi
