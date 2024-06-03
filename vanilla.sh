@@ -109,7 +109,7 @@ framework() {
 	jar_util d "$FRAMEWORK_JAR" fw classes*
 
 	# Disassemble classes4.dex
-	java -jar "$dir/bin/apktool/baksmali.jar" d -o "$CLASSES4_DIR" "$CLASSES4_DEX"
+	jar_util d -o "$CLASSES4_DIR" fw "$CLASSES4_DEX"
 
 	declare -a SMALI_FILES=(
 		"android/app/ApplicationPackageManager.smali"
@@ -145,7 +145,7 @@ if [[ ! -d $dir/jar_temp ]]; then
 fi
 
 framework
-services
+
 
 if  [ -f $dir/jar_temp/framework.jar ]; then
 		sudo cp -rf $dir/jar_temp/*.jar $dir/module/system/framework
