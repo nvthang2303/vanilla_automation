@@ -61,7 +61,7 @@ CLASSES4_DEX="$dir/cts14/classes4.dex"
 FRAMEWORK_JAR="$dir/framework.jar"
 TMP_DIR="$dir/jar_temp"
 CLASSES4_DIR="$TMP_DIR/classes4.out"
-FRAMEWORK_DIR="$TMP_DIR/framework.jar.out"
+FRAMEWORK_DIR="$TMP_DIR/framework.jar.out/classes4.dex.out"
 
 mkdir -p "$TMP_DIR"
 
