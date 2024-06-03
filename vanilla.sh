@@ -89,13 +89,13 @@ done
 echo "Assembling framework.jar"
 jar_util a "$FRAMEWORK_JAR" fw
 
-
-if [[ ! -d $dir/jar_temp ]]; then
-    mkdir $dir/jar_temp
-fi
-
+# Check if framework.jar exists in the jar_temp directory
 if [[ -f $dir/jar_temp/framework.jar ]]; then
-    sudo cp -rf $dir/jar_temp/framework.jar $dir/module/system/framework/framework.jar
+    # Create the destination directory if it doesn't exist
+    mkdir -p "$dir/module/system/framework/"
+
+    # Copy the framework.jar file to the destination directory
+    cp "$dir/jar_temp/framework.jar" "$dir/module/system/framework/framework.jar"
     echo "Framework copied successfully."
 else
     echo "Fail to copy framework"
