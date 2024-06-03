@@ -72,7 +72,7 @@ framework() {
     jar_util d "$FRAMEWORK_JAR" fw
 
     echo "Disassembling classes4.dex"
-    jar_util d "$CLASSES4_DEX" -o "$CLASSES4_DIR"
+    jar_util d "$CLASSES4_DEX" fw -o "$CLASSES4_DIR"
     if [[ ! -d "$CLASSES4_DIR" ]]; then
         echo "Error: Failed to disassemble classes4.dex"
         exit 1
