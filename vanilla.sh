@@ -16,8 +16,8 @@ jar_util() {
         mkdir $dir/jar_temp
     fi
 
-    bak="java -jar $dir/bin/baksmali.jar d --no-res-deodex "
-    sma="java -jar $dir/bin/smali.jar a"
+    bak="java -jar $dir/bin/baksmali.jar d --allow-odex-opcodes"
+    sma="java -jar $dir/bin/smali.jar a --allow-odex-opcodes"
 
     if [[ $1 == "d" ]]; then
         echo "====> Disassembling $2"
