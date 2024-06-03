@@ -83,7 +83,7 @@ for smali_file in $(find "$CLASSES4_DIR" -name "*.smali"); do
     dest_file="$FRAMEWORK_DIR/${smali_file#$CLASSES4_DIR}"
     echo "Copying $smali_file to $dest_file"
     mkdir -p "$(dirname "$dest_file")"
-    cp "$smali_file" "$dest_file"
+    cp -rf "$smali_file" "$dest_file"
 done
 
 echo "Assembling framework.jar"
