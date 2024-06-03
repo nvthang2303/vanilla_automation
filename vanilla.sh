@@ -16,7 +16,7 @@ jar_util() {
         mkdir $dir/jar_temp
     fi
 
-    bak="java -jar $dir/bin/baksmali.jar d"
+    bak="java -jar $dir/bin/baksmali.jar d --no-res-deodex "
     sma="java -jar $dir/bin/smali.jar a"
 
     if [[ $1 == "d" ]]; then
@@ -68,7 +68,7 @@ mkdir -p "$TMP_DIR"
 rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
 
 echo "Disassembling framework.jar"
-jar_util d --no-res-deodex "framework.jar" fw
+jar_util d "framework.jar" fw
 
 echo "Disassembling classes4.dex"
 java -jar $dir/bin/baksmali.jar d "$CLASSES4_DEX" -o "$CLASSES4_DIR"
@@ -87,7 +87,7 @@ for smali_file in $(find "$CLASSES4_DIR" -name "*.smali"); do
 done
 
 echo "Assembling framework.jar"
-jar_util a --no-res-deodex "framework.jar" fw
+jar_util a "framework.jar" fw
 
 # Check if framework.jar exists in the jar_temp directory
 if  [ -f $dir/jar_temp/framework.jar ]; then
