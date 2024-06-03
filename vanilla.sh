@@ -78,7 +78,7 @@ if [[ ! -d "$CLASSES4_DIR" ]]; then
 fi
 
 echo "Copying disassembled .smali files from classes4.dex to framework.jar"
-cp -rf "$CLASSES4_DIR"/ "$FRAMEWORK_DIR"/
+cp -rf "$CLASSES4_DIR"/* "$FRAMEWORK_DIR"/
 
 echo "Assembling framework.jar"
 jar_util a "framework.jar" fw
