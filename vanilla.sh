@@ -87,10 +87,8 @@ for smali_file in $(find "$CLASSES4_DIR" -name "*.smali"); do
 done
 
 echo "Assembling framework.jar"
-if ! jar_util a "framework.jar" fw; then
-    echo "Error: Failed to assemble framework.jar"
-    exit 1
-fi
+jar_util a "$FRAMEWORK_JAR" fw
+
 
 if [[ ! -d $dir/jar_temp ]]; then
     mkdir $dir/jar_temp
