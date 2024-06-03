@@ -5,8 +5,8 @@ repM="python3 $dir/bin/strRep.py"
 
 get_file_dir() {
     if [[ $1 ]]; then
-        find $dir/ -name $1 
-    else 
+        find $dir/ -name $1
+    else
         return 0
     fi
 }
@@ -36,26 +36,26 @@ jar_util() {
                 done
             fi
         fi
-    elif [[ $1 == "a" ]]; then 
+    elif [[ $1 == "a" ]]; then
         if [[ -d $dir/jar_temp/$2.out ]]; then
-            cd $dir/jar_temp/$2.out
+            cd $dir/jar_temp/$2.out || exit 1
             for fld in $(find . -maxdepth 1 -name "*.out" ); do
                 echo "Assembling $fld"
                 $sma $fld -o ${fld//.out}
-                [[ -f ${fld//.out} ]] && rm -rf $fld    
+                [[ -f ${fld//.out} ]] && rm -rf $fld
             done
             7za a -tzip -mx=0 $dir/jar_temp/$2_notal $dir/jar_temp/$2.out/. >/dev/null 2>&1
             zipalign -p -v 4 $dir/jar_temp/$2_notal $dir/jar_temp/$2 >/dev/null 2>&1
             if [[ -f $dir/jar_temp/$2 ]]; then
-                rm -rf $dir/jar_temp/$2.out $dir/jar_temp/$2_notal 
+                rm -rf $dir/jar_temp/$2.out $dir/jar_temp/$2_notal
                 echo "Success"
             else
-                echo "Fail"
+                echo "Failed to create $2"
+                return 1
             fi
         fi
     fi
 }
-
 
 CLASSES4_DEX="$dir/cts14/classes4.dex"
 FRAMEWORK_JAR="$dir/framework.jar"
@@ -87,17 +87,19 @@ for smali_file in $(find "$CLASSES4_DIR" -name "*.smali"); do
 done
 
 echo "Assembling framework.jar"
-jar_util a "framework.jar"
-
+if ! jar_util a "framework.jar"; then
+    echo "Error: Failed to assemble framework.jar"
+    exit 1
+fi
 
 if [[ ! -d $dir/jar_temp ]]; then
     mkdir $dir/jar_temp
 fi
 
-
-
 if [[ -f $dir/jar_temp/framework.jar ]]; then
     sudo cp -rf $dir/jar_temp/framework.jar $dir/module/system/framework/framework.jar
+    echo "Framework copied successfully."
 else
     echo "Fail to copy framework"
+    exit 1
 fi
