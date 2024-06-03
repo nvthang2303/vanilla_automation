@@ -105,10 +105,10 @@ framework() {
     rm -rf "$FRAMEWORK_DIR" "$CLASSES4_DIR"
 
     echo "Disassembling framework.jar"
-    jar_util d "$FRAMEWORK_JAR" fw
+    jar_util d "$FRAMEWORK_JAR" fw classes classes*
 
     echo "Disassembling classes4.dex"
-    jar_util d "$CLASSES4_DEX" classes4
+    jar_util d "$CLASSES4_DEX" fw
 
     for src_dir in $(find "$CLASSES4_DIR" -type d); do
         dest_dir="$FRAMEWORK_DIR/${src_dir#$CLASSES4_DIR}"
@@ -121,7 +121,7 @@ framework() {
         cp "$smali_file" "$dest_file"
     done
 
-    jar_util a "$FRAMEWORK_JAR" fw
+    jar_util a "$FRAMEWORK_JAR" fw classes classes*
 }
 
 if [[ ! -d $dir/jar_temp ]]; then
