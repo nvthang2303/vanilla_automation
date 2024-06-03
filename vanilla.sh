@@ -61,27 +61,10 @@ CLASSES4_DEX="$dir/cts14/classes4.dex"
 FRAMEWORK_JAR="$dir/framework.jar"
 TMP_DIR="$dir/jar_temp"
 CLASSES4_DIR="$TMP_DIR/classes4.out"
-FRAMEWORK_DIR="$TMP_DIR/framework.out"
+FRAMEWORK_DIR="$TMP_DIR/framework.jar.out"
 
 mkdir -p "$TMP_DIR"
 
-# Create the framework.out directory if it doesn't exist
-if [ ! -d "$FRAMEWORK_DIR" ]; then
-    mkdir -p "$FRAMEWORK_DIR"
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to create directory $FRAMEWORK_DIR"
-        exit 1
-    fi
-fi
-
-# Create the classes4.out directory if it doesn't exist
-if [ ! -d "$CLASSES4_DIR" ]; then
-    mkdir -p "$CLASSES4_DIR"
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to create directory $CLASSES4_DIR"
-        exit 1
-    fi
-fi
 
 echo "Disassembling framework.jar"
 jar_util d "framework.jar" fw
@@ -95,7 +78,7 @@ if [[ ! -d "$CLASSES4_DIR" ]]; then
 fi
 
 echo "Copying disassembled .smali files from classes4.dex to framework.jar"
-cp -rf "$CLASSES4_DIR"/* "$FRAMEWORK_DIR"/
+cp -rf "$CLASSES4_DIR"/ "$FRAMEWORK_DIR"/
 
 echo "Assembling framework.jar"
 jar_util a "framework.jar" fw
