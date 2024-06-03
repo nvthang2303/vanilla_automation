@@ -16,8 +16,8 @@ jar_util() {
         mkdir $dir/jar_temp
     fi
 
-    bak="java -jar $dir/bin/baksmali.jar d --api 30"
-    sma="java -jar $dir/bin/smali.jar a --api 30"
+    bak="java -jar $dir/bin/baksmali.jar d --api 33"
+    sma="java -jar $dir/bin/smali.jar a --api 33"
 
     if [[ $1 == "d" ]]; then
         echo "====> Disassembling $2"
