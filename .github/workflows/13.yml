@@ -24,7 +24,7 @@ jobs:
     - name: JAVA setup
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin'
+        distribution: 'zulu'
         java-version: '21'
 
     - name: Set up Time
