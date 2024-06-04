@@ -87,8 +87,6 @@ if [[ ! -d "$CLASSES4_DIR" ]]; then
     exit 1
 fi
 
-echo "Copying disassembled .smali files from classes4.dex to framework.jar"
-cp -rf "$CLASSES4_DIR"/* "$FRAMEWORK_DIR"/
 
 # Find and copy specific .smali files
 files_to_copy=("ApplicationPackageManager.smali" "Instrumentation.smali" "AndroidKeyStoreSpi.smali")
@@ -99,7 +97,7 @@ for file in "${files_to_copy[@]}"; do
     
     if [[ -f "$classes4_file" ]]; then
         echo "Copying $classes4_file to $framework_file"
-        cp "$classes4_file" "$framework_file"
+        cp -rf "$classes4_file" "$framework_file"
     else
         echo "Error: $classes4_file not found"
     fi
