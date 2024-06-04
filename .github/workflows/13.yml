@@ -24,8 +24,8 @@ jobs:
     - name: JAVA setup
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin'
-        java-version: '21'
+        distribution: 'microsoft'
+        java-version: '19'
 
     - name: Set up Time
       run: |
