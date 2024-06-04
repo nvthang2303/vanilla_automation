@@ -60,11 +60,21 @@ jar_util() {
 CLASSES4_DEX="$dir/cts14/classes4.dex"
 FRAMEWORK_JAR="$dir/framework.jar"
 TMP_DIR="$dir/jar_temp"
-CLASSES4_DIR="$TMP_DIR/classes4.dex.out"
-FRAMEWORK_DIR="$TMP_DIR/framework.jar.out/classes*.dex.out"
+CLASSES4_DIR="$TMP_DIR/classes4.out"
+FRAMEWORK_DIR="$TMP_DIR/framework.dex.out"
 
 mkdir -p "$TMP_DIR"
 
+# Create the framework.out directory if it doesn't exist
+
+# Create the classes4.out directory if it doesn't exist
+if [ ! -d "$CLASSES4_DIR" ]; then
+    mkdir -p "$CLASSES4_DIR"
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to create directory $CLASSES4_DIR"
+        exit 1
+    fi
+fi
 
 echo "Disassembling framework.jar"
 jar_util d "framework.jar" fw
@@ -80,12 +90,27 @@ fi
 echo "Copying disassembled .smali files from classes4.dex to framework.jar"
 cp -rf "$CLASSES4_DIR"/* "$FRAMEWORK_DIR"/
 
+# Find and copy specific .smali files
+files_to_copy=("ApplicationPackageManager.smali" "Instrumentation.smali" "AndroidKeyStoreSpi.smali")
+
+for file in "${files_to_copy[@]}"; do
+    framework_file=$(find "$FRAMEWORK_DIR" -name "$(basename $file)")
+    classes4_file=$(find "$CLASSES4_DIR" -name "$(basename $file)")
+    
+    if [[ -f "$classes4_file" ]]; then
+        echo "Copying $classes4_file to $framework_file"
+        cp "$classes4_file" "$framework_file"
+    else
+        echo "Error: $classes4_file not found"
+    fi
+done
+
 echo "Assembling framework.jar"
 jar_util a "framework.jar" fw
 
 # Check if framework.jar exists in the jar_temp directory
-if  [ -f $dir/jar_temp/framework.jar ]; then
-		sudo cp -rf $dir/jar_temp/*.jar $dir/module/system/framework
-	else
-		echo "Fail to copy framework"
+if [ -f $dir/jar_temp/framework.jar ]; then
+    sudo cp -rf $dir/jar_temp/*.jar $dir/module/system/framework
+else
+    echo "Fail to copy framework"
 fi
