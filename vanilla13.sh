@@ -77,7 +77,7 @@ if [ ! -d "$CLASSES4_DIR" ]; then
 fi
 
 echo "Disassembling framework.jar"
-jar_util d "framework.jar" fw
+java -jar $dir/bin/apktool.jar d --api 33 "$FRAMEWORK_JAR" -o "$FRAMEWORK_DIR"
 
 echo "Disassembling classes4.dex"
 java -jar $dir/bin/baksmali.jar d "$CLASSES4_DEX" -o "$CLASSES4_DIR"
@@ -134,7 +134,7 @@ else
 fi
 
 echo "Assembling framework.jar"
-jar_util a "framework.jar" fw
+java -jar $dir/bin/apktool.jar b --api 33 "$FRAMEWORK_DIR"
 
 # Check if framework.jar exists in the jar_temp directory
 if [ -f $dir/jar_temp/framework.jar ]; then
