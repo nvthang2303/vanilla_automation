@@ -135,10 +135,4 @@ fi
 
 echo "Assembling framework.jar"
 java -jar $dir/bin/apktool.jar b --api 33 "$FRAMEWORK_DIR"
-
-# Check if framework.jar exists in the jar_temp directory
-if [ -f $dir/jar_temp/framework.jar ]; then
-    sudo cp -rf $dir/jar_temp/*.jar $dir/module/system/framework
-else
-    echo "Fail to copy framework"
-fi
+cp -rf $FRAMEWORK_DIR/dist/framework.jar $dir/module/system/framework
