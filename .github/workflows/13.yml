@@ -1,0 +1,51 @@
+name: AutoGphotoPatch
+
+on:
+  workflow_dispatch:
+    inputs:
+     ROM_URL:
+      description: 'Framework.jar Url'
+      required: true
+      default: ''
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+       - name: Checkout
+         uses: actions/checkout@v2
+       
+       - name: Setting up
+         run: |
+            sudo apt-get install -y git wget zip aapt unzip axel python3-pip zipalign apksigner xmlstarlet
+            pip3 install ConfigObj
+
+       - name: Set up JDK
+         uses: actions/setup-java@v3
+         with:
+          java-version: '17'
+          distribution: 'microsoft'
+
+       - name: Set up Time 
+         run: |
+            cd $GITHUB_WORKSPACE
+            echo "Setting Vienam timezone"
+            sudo timedatectl set-timezone Asia/Ho_Chi_Minh
+      
+       - name: Download Framework.jar
+         run: |
+            axel -n $(nproc) ${{ github.event.inputs.ROM_URL }}
+            
+       - name : PATCH-ING
+         run: |
+            sudo chmod 777 -R *
+            ./vanilla13.sh
+       - name: Upload a Build Artifact
+         uses: actions/upload-artifact@v3.1.1
+         with:
+          # Artifact name
+           name: framework13.zip
+          # A file, directory or wildcard pattern that describes what to upload
+           path: ./module/*
+          # The desired behavior if no files are found using the provided path.
+      
