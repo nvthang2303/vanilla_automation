@@ -18,7 +18,7 @@ jobs:
     - name: Setting up
       run: |
         sudo apt-get update
-        sudo apt-get install -y git wget android-sdk-libsparse-utils zip aapt unzip axel python3-pip zipalign apksigner xmlstarlet
+        sudo apt-get install -y git wget default-jdk android-sdk-libsparse-utils zip aapt unzip axel python3-pip zipalign apksigner xmlstarlet
         pip3 install ConfigObj
 
     - name: JAVA setup
