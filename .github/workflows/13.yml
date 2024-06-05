@@ -38,6 +38,8 @@ jobs:
         axel -n $(nproc) "${{ github.event.inputs.ROM_URL }}"
 
     - name: PATCH-ING
+      env:
+        JAVA_OPTS: -Xmx4096m
       run: |
         sudo chmod 777 -R *
         ./vanilla13.sh
