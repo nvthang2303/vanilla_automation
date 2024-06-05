@@ -134,8 +134,5 @@ else
 fi
 
 echo "Assembling framework.jar"
-assemb() {
-  sudo java -Djava.io.tmpdir=. -jar $dir/bin/apktool.jar b --api 33 "$FRAMEWORK_DIR"
-}
-
+sudo java -Djava.io.tmpdir=. -jar $dir/bin/apktool.jar b --api 33 "$FRAMEWORK_DIR"
 cp -rf $FRAMEWORK_DIR/dist/framework.jar $dir/module/system/framework
