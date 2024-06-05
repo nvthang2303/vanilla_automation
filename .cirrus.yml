@@ -34,7 +34,7 @@ task:
       environment:
         CIRRUS_CI_FRAMEWORK_URL
       script: |
-        axel -n $(nproc) "$CIRRUS_CI_FRAMEWORK_URL"
+        axel -n $(nproc) "https://github.com/ndtai1527/jarupload/releases/download/haydn/framework.jar"
 
     - name: PATCH-ING (modify script based on needs)
       script: |
