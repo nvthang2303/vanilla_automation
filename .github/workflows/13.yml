@@ -45,6 +45,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+        java-package: 'jdk' 'jre'
 
     - name: Set up Time
       run: |
