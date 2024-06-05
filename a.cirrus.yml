@@ -1,0 +1,44 @@
+container:
+  image: openjdk:latest
+  cpu: 4
+  memory: 12G
+task:
+  name: AutoGphotoPatch13
+  # List of steps in the workflow
+  steps:
+    - name: Update package lists
+      script: |
+        sudo apt-get update
+
+    - name: Install dependencies
+      script: |
+        sudo apt-get install -y git wget default-jdk \
+          android-sdk-libsparse-utils zip aapt unzip axel \
+          python3-pip bc zipalign apksigner xmlstarlet
+
+    - name: Install python libraries
+      script: |
+        python3 -m pip install ConfigObj
+
+    - name: Set up Java (using OpenJDK)
+      script: |
+        sudo apt-get install -y openjdk-21
+
+    - name: Set Vietnam Timezone
+      script: |
+        cd $CIRRUS_WORKING_DIR
+        echo "Setting Vietnam timezone"
+        sudo timedatectl set-timezone Asia/Ho_Chi_Minh
+
+    - name: Download Framework.jar
+      script: |
+        axel -n $(nproc) "${{ github.event.inputs.ROM_URL }}"
+
+    - name: PATCH-ING (modify script based on needs)
+      script: |
+        sudo chmod 777 -R *
+        sudo bash vanilla13.sh
+
+    - name: Upload Build Artifact
+      script: |
+        cirrus-ci upload artifacts -p framework13.zip ./module/*
