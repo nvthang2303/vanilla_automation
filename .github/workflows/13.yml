@@ -12,13 +12,32 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+    - name: Clean Junks
+      run: |
+        docker rmi `docker images -q` || true
+        sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/sudo apt/sources.list.d || true
+        sudo apt -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php* || true
+        sudo apt -y autoremove --purge || true
+        sudo apt -y autoclean || true
+        sudo apt clean || true
+
+    - name: Maximize build space
+      uses: easimon/maximize-build-space@master
+      with:
+        swap-size-mb: 8192
+        root-reserve-mb: 4096
+        temp-reserve-mb: 4096
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
+    
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@main
 
     - name: Setting up
       run: |
         sudo apt-get update
-        sudo apt-get install -y git wget default-jdk android-sdk-libsparse-utils zip aapt unzip axel python3-pip zipalign apksigner xmlstarlet python3
+        sudo apt-get install -y git wget default-jdk android-sdk-libsparse-utils zip aapt unzip axel python3-pip bc zipalign apksigner xmlstarlet python3 
         pip3 install ConfigObj
 
     - name: JAVA setup
