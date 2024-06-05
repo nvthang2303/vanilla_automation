@@ -18,13 +18,12 @@ jobs:
     - name: Setting up
       run: |
         sudo apt-get update
-        sudo apt-get install -y git wget default-jdk android-sdk-libsparse-utils zip aapt unzip axel python3-pip zipalign apksigner xmlstarlet
+        sudo apt-get install -y git wget default-jdk android-sdk-libsparse-utils zip aapt unzip axel python3-pip zipalign apksigner xmlstarlet python3
         pip3 install ConfigObj
 
     - name: JAVA setup
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v3
       with:
-        distribution: 'temurin'
         java-version: '21'
 
     - name: Set up Time
@@ -42,7 +41,7 @@ jobs:
         JAVA_OPTS: -Xmx4096m
       run: |
         sudo chmod 777 -R *
-        ./vanilla13.sh
+        sudo bash vanilla13.sh
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.1
