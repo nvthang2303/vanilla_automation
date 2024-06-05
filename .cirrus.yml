@@ -32,7 +32,7 @@ task:
 
     - name: Download Framework.jar
       environment:
-        CIRRUS_CI_FRAMEWORK_URL = linkdl
+        CIRRUS_CI_FRAMEWORK_URL
       script: |
         axel -n $(nproc) "$CIRRUS_CI_ FRAMEWORK_URL"
 
