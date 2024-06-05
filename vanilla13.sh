@@ -134,5 +134,8 @@ else
 fi
 
 echo "Assembling framework.jar"
-java -Djava.io.tmpdir=. -jar $dir/bin/apktool.jar --max-methods 65536 --split-dex b --api 33 "$FRAMEWORK_DIR"
+assemb() {
+  sudo java -Djava.io.tmpdir=. -jar $dir/bin/apktool.jar b --api 33 "$FRAMEWORK_DIR"
+}
+
 cp -rf $FRAMEWORK_DIR/dist/framework.jar $dir/module/system/framework
