@@ -31,8 +31,10 @@ task:
         sudo timedatectl set-timezone Asia/Ho_Chi_Minh
 
     - name: Download Framework.jar
+      environment:
+        CIRRUS_CI_FRAMEWORK_URL = linkdl
       script: |
-        axel -n $(nproc) "${{ github.event.inputs.ROM_URL }}"
+        axel -n $(nproc) "$CIRRUS_CI_ FRAMEWORK_URL"
 
     - name: PATCH-ING (modify script based on needs)
       script: |
