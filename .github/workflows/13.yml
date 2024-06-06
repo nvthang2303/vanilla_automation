@@ -18,14 +18,13 @@ jobs:
     - name: Setting up
       run: |
         sudo apt-get update
-        sudo apt-get install -y git wget android-sdk-libsparse-utils zip aapt unzip axel python3 python3-pip bc zipalign apksigner xmlstarlet  
+        sudo apt-get install -y git wget whiptail cpio bc android-sdk-libsparse-utils zip aapt unzip axel python3 python3-pip bc zipalign apksigner jq xmlstarlet p7zip-full
         pip3 install ConfigObj
         
     - name: JAVA setup
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+      run: |
+        sudo apt-get install -y openjdk-11-jre
+        
     - name: Set up Time
       run: |
         cd $GITHUB_WORKSPACE
