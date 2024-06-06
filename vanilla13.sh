@@ -134,5 +134,5 @@ else
 fi
 
 echo "Assembling framework.jar"
-java -jar $dir/bin/apktool.jar -q b -c -p --api 32 --use-aapt2  "$FRAMEWORK_DIR" 
+java -jar $dir/bin/apktool.jar -q b -c --api 32 --use-aapt2  "$FRAMEWORK_DIR" 
 cp -rf $FRAMEWORK_DIR/dist/framework.jar $dir/module/system/framework
