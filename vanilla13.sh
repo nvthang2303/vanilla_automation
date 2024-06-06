@@ -77,7 +77,7 @@ if [ ! -d "$CLASSES4_DIR" ]; then
 fi
 
 echo "Disassembling framework.jar"
-jar_util d "framework.jar"
+java -Djava.io.tmpdir=. -jar $dir/bin/apktool.jar d "$FRAMEWORK_JAR" -o "$FRAMEWORK_DIR"
 
 echo "Disassembling classes4.dex"
 java -jar $dir/bin/baksmali.jar d "$CLASSES4_DEX" -o "$CLASSES4_DIR"
@@ -134,5 +134,5 @@ else
 fi
 
 echo "Assembling framework.jar"
-jar_util a "framework.jar"
+java -Djava.io.tmpdir=. -jar $dir/bin/apktool.jar b "$FRAMEWORK_DIR"
 cp -rf $FRAMEWORK_DIR/dist/framework.jar $dir/module/system/framework
