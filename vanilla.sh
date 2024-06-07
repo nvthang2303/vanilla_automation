@@ -65,73 +65,8 @@ FRAMEWORK_DIR="$TMP_DIR/framework.jar.out"
 
 mkdir -p "$TMP_DIR"
 
-# Create the framework.out directory if it doesn't exist
-
-# Create the classes4.out directory if it doesn't exist
-if [ ! -d "$CLASSES4_DIR" ]; then
-    mkdir -p "$CLASSES4_DIR"
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to create directory $CLASSES4_DIR"
-        exit 1
-    fi
-fi
-
 echo "Disassembling framework.jar"
 jar_util d "framework.jar" fw
-
-echo "Disassembling classes4.dex"
-java -jar $dir/bin/baksmali.jar d "$CLASSES4_DEX" -o "$CLASSES4_DIR"
-
-if [[ ! -d "$CLASSES4_DIR" ]]; then
-    echo "Error: Failed to disassemble classes4.dex"
-    exit 1
-fi
-
-
-# Find and copy specific .smali files
-files_to_copy=("ApplicationPackageManager.smali" "Instrumentation.smali" "AndroidKeyStoreSpi.smali")
-
-for file in "${files_to_copy[@]}"; do
-    framework_file=$(find "$FRAMEWORK_DIR" -name "$(basename $file)")
-    classes4_file=$(find "$CLASSES4_DIR" -name "$(basename $file)")
-    
-    if [[ -f "$classes4_file" ]]; then
-        echo "Copying $classes4_file to $framework_file"
-        cp -rf "$classes4_file" "$framework_file"
-    else
-        echo "Error: $classes4_file not found"
-    fi
-done
-
-util_folder=$(find "$FRAMEWORK_DIR" -type d -path "*/com/android/internal/util")
-
-if [[ -d "$util_folder" ]]; then
-    summert_folder="$util_folder/summert"
-    mkdir -p "$summert_folder"
-    
-    files_to_copy_to_summert=(
-        "AttestationHooks.smali"
-        "GamesPropsUtils.smali"
-        "PixelPropsUtils.smali"
-        "PixelPropsUtils\$1.smali"
-        "PixelPropsUtils\$\$ExternalSyntheticLambda0.smali"
-        "PixelPropsUtils\$\$ExternalSyntheticLambda1.smali"
-        "AttestationHooks\$\$ExternalSyntheticLambda0.smali"
-    )
-    
-    for file in "${files_to_copy_to_summert[@]}"; do
-        classes4_file=$(find "$CLASSES4_DIR" -name "$file")
-        
-        if [[ -f "$classes4_file" ]]; then
-            echo "Copying $classes4_file to $summert_folder"
-            cp "$classes4_file" "$summert_folder"
-        else
-            echo "Error: $classes4_file not found"
-        fi
-    done
-else
-    echo "Error: util folder not found in framework"
-fi
 
 echo "Assembling framework.jar"
 jar_util a "framework.jar" fw
