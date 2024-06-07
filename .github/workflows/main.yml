@@ -5,7 +5,7 @@ on:
     inputs:
      ROM_URL:
       description: 'Framework.jar Url'
-      required: true
+      required: false
       default: ''
 jobs:
   build:
